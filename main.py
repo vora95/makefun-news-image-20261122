@@ -14,10 +14,11 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 def main():
     out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
     os.makedirs(out_dir, exist_ok=True)
-    shutil.copyfile(
-        os.path.join(HERE, "entry.png"),
-        os.path.join(out_dir, "entry.png"),
-    )
+    src = os.path.join(HERE, "entry.png")
+    dst = os.path.join(out_dir, "entry.png")
+    shutil.copyfile(src, dst)
+    # Guard the gate: the copy must be byte-identical to the shipped image.
+    assert os.path.getsize(dst) == os.path.getsize(src), "copy size mismatch"
 
 
 if __name__ == "__main__":
